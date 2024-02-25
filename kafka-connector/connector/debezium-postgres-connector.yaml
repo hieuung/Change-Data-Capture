@@ -1,0 +1,24 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: debezium-connector-postgres
+  labels:
+    strimzi.io/cluster: kafka-connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    name: debezium-connector-postgres
+    tasks.max: 1
+    database.hostname: 10.102.224.2
+    database.port: 5432
+    database.user: ${secrets:kafka/postgres-secret:username}
+    database.password: ${secrets:kafka/postgres-secret:password}
+    database.server.id: 184054
+    database.dbname: postgres
+    topic.prefix: debezium
+    topic.auto.create: true
+    database.include.list: postgres
+    schema.include.list: datalake
+    schema.history.internal.kafka.bootstrap.servers: kafka-cluster-kafka-bootstrap:9092
+    schema.history.internal.kafka.topic: cdc.datalake

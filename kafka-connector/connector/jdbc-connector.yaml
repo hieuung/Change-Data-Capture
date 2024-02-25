@@ -1,0 +1,25 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: kafka-connector-postgres
+  labels:
+    strimzi.io/cluster: kafka-connect-cluster
+spec:
+  class: io.confluent.connect.jdbc.JdbcSourceConnector
+  tasksMax: 1
+  config:
+    name: postgres-source
+    tasks.max: 1
+    database.hostname: 10.102.224.2
+    database.port: 5432
+    database.url: jdbc:postgresql://10.102.224.2:5432/postgres
+    database.user: ${secrets:kafka/postgres-secret:username}
+    database.password: ${secrets:kafka/postgres-secret:password}
+    database.server.id: 184054
+    topic.prefix: kafkaconnect
+    topic.auto.create: true
+    mode: bulk
+    schema.include.list: datalake
+    database.include.list: postgres
+    schema.history.internal.kafka.bootstrap.servers: kafka-cluster-kafka-bootstrap:9092
+    schema.history.internal.kafka.topic: cdc.datalake

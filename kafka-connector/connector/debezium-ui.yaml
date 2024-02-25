@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-ui
+spec:
+  selector:
+    matchLabels:
+      app: debezium-ui
+  template:
+    metadata:
+      labels:
+        app: debezium-ui
+    spec:
+      containers:
+        - name: debezium-ui
+          image: quay.io/debezium/debezium-ui
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+          - name: KAFKA_CONNECT_URIS
+            value: http://kafka-connect-cluster-connect-api.kafka.svc:8083
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: debezium-ui-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+  selector:
+    app: debezium-ui
+
