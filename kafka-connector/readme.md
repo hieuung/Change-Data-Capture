@@ -50,6 +50,44 @@ kubectl apply -f ./kafka-connector/kafka/ -n kafka
 
 ## Install Kafka connect
 
+### Install database for testing
+
+- Installation
+```sh
+kubectl apply -f ./database/ -n kafka
+```
+
+- Population
+```sql
+CREATE SCHEMA IF NOT EXISTS datalake;
+
+CREATE TABLE IF NOT EXISTS datalake.user_signed_up_at (
+  id SERIAL PRIMARY KEY,
+  user_id INT,
+  date INT,
+  month INT,
+  year INT,
+  created_time BIGINT
+);
+
+INSERT INTO datalake.user_signed_up_at (user_id, date, month, year, created_time)
+VALUES 
+('63', 16, 2, 2024, 1708000211691)
+;
+INSERT INTO datalake.user_signed_up_at (user_id, date, month, year, created_time)
+VALUES 
+('4', 16, 2, 2024, 1707992271360)
+;
+INSERT INTO datalake.user_signed_up_at (user_id, date, month, year, created_time)
+VALUES 
+('38', 16, 2, 2024, 1707997211872)
+;
+INSERT INTO datalake.user_signed_up_at (user_id, date, month, year, created_time)
+VALUES 
+('13', 16, 2, 2024, 1707993732710)
+;
+```
+
 ### Add plugin
 
 - Download required pluging in to `my-plugins` folder.
@@ -102,7 +140,7 @@ kubectl get KafkaConnector -n kafka
 ![Offset expolore](<../database/asset/Screenshot from 2024-02-26 00-50-24.png>)
 
 - Sample message
-```{r, include=FALSE}
+```json
 {
   "schema": {
     "type": "struct",
