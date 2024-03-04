@@ -90,8 +90,8 @@ VALUES
 
 ### Add plugin
 
-- Download required pluging in to `my-plugins` folder.
-- Created image base on `Dockerfile`
+- Download required plugins in to `my-plugins` folder.
+- Created image based on `Dockerfile`
 - Push to registry
 
 - Install connect cluster based on pushed image (currently my own [image](https://hub.docker.com/repository/docker/hieuung/jbdc-kafka-connect/general))
@@ -105,7 +105,7 @@ kubectl get KafkaConnect -n kafka
 ### JBDC connector
 - Query-based CDC method 
 - Direct query on the source database (database performance)
-- Required increamental columns in the capture table 
+- Required incremental columns in the capture table 
 (update time, ...)
 - Can't capture `DELETE` operator
 - Installation
@@ -119,10 +119,10 @@ kubectl get KafkaConnector -n kafka
 
 ### Debezium
 - Logs-based CDC method 
-- Using wal log in source database (Increase database performance)
-- Not required increamental columns in the capture table 
+- Using wal_log in the source database (Increase database performance)
+- Not required incremental columns in the capture table 
 (update time, ...)
-- Capture all change inclue `DELETE`
+- Capture all changes including `DELETE`
 - Installation
 ```sh
 kubectl apply -f ./kafka-connector/connector/debezium-postgres-connector.yaml -n kafka
@@ -135,7 +135,7 @@ kubectl get KafkaConnector -n kafka
  
 ![Debezium postgres connector](<../database/asset/Screenshot from 2024-02-26 00-47-25.png>)
 
-- Viewing Capture message in Offset expolore
+- Viewing Capture message in Offset explore
 
 ![Offset expolore](<../database/asset/Screenshot from 2024-02-26 00-50-24.png>)
 
